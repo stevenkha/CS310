@@ -1,0 +1,352 @@
+// Dashboard
+CS310-01-Fall2020
+Program 3: N-Grams and Frequency Counts
+<https://sdsu.instructure.com/courses/33181>
+//
+Skip To Content <#content>
+Dashboard <https://sdsu.instructure.com/>
+
+  *
+    Steven Kha
+    Account
+
+  *
+    Dashboard
+    <https://sdsu.instructure.com/>
+  *
+    Courses
+
+  *
+    Calendar
+    <https://sdsu.instructure.com/calendar>
+  *
+    Inbox
+    <https://sdsu.instructure.com/conversations>
+  *
+    History
+
+  *
+    Studio
+    <https://sdsu.instructure.com/accounts/1/external_tools/247?launch_type=global_navigation>
+
+  *
+    Help
+    <http://help.instructure.com/>
+
+  *
+
+      
+
+Close <#>
+//
+
+  * /My Dashboard / <https://sdsu.instructure.com/>
+  * CS310-01-Fall2020 <https://sdsu.instructure.com/courses/33181>
+  * Assignments <https://sdsu.instructure.com/courses/33181/assignments>
+  * Program 3: N-Grams and Frequency Counts
+    <https://sdsu.instructure.com/courses/33181/assignments/44407>
+
+Fall 2020
+
+  * Home <https://sdsu.instructure.com/courses/33181>
+  * Announcements <https://sdsu.instructure.com/courses/33181/announcements>
+  * Assignments <https://sdsu.instructure.com/courses/33181/assignments>
+  * Discussions
+    <https://sdsu.instructure.com/courses/33181/discussion_topics>
+  * Grades <https://sdsu.instructure.com/courses/33181/grades>
+  * Files <https://sdsu.instructure.com/courses/33181/files>
+  * Syllabus
+    <https://sdsu.instructure.com/courses/33181/assignments/syllabus>
+  * Quizzes <https://sdsu.instructure.com/courses/33181/quizzes>
+  * Modules <https://sdsu.instructure.com/courses/33181/modules>
+  * Collaborations
+    <https://sdsu.instructure.com/courses/33181/collaborations>
+  * Google Drive
+    <https://sdsu.instructure.com/courses/33181/external_tools/27>
+  * Library Resources
+    <https://sdsu.instructure.com/courses/33181/external_tools/469>
+
+
+  Program 3: N-Grams and Frequency Counts
+
+  * Due Nov 13, 2020 by 11:59pm
+  * Points 30
+  * Submitting a file upload
+  * File Types java, cpp, zip, and hpp
+  * Available Oct 28, 2020 at 12am - Nov 20, 2020 at 11:59pm 24 days
+
+This assignment was locked Nov 20, 2020 at 11:59pm.
+
+
+    Overview
+
+Frequency counts serve an important role when analyzing a language.
+Tools like autocomplete use them when calculating the list of words to
+recommend. In this assignment, students shall build a program that
+analyzes an input text file. The program will compute the number of
+times each word (token) appears in the document.  Additionally, the
+program will also construct n-grams from the input text. Specifically,
+it will build a random phrase constructed from n-grams in the text. 
+
+After completing this exercise, students will:
+
+  * Gain foundational experience using a Map/Dictionary in a practical
+    application.
+  * Understand the role the Map serves in Computer Science and how it
+    can sometimes simplify an algorithm. 
+  * Use command-line arguments in a program to change program behavior
+    at launch. 
+  * Read and process data from an arbitrary location on the file system. 
+  * Build an basic Object Oriented program 
+
+
+    Requirements
+
+At program launch, the user shall provide a command line argument
+indicating the location of the input file to use. If the program fails
+to find the file, or cannot open it for some reason, the program shall
+exit with an error message explaining the nature of the problem. If the
+user fails to provide a command line argument, the program shall
+terminate with a message describing the correct use of the program. 
+
+Next, the program shall extract the word tokens from the input file. To
+simplify further analysis, the program shall automatically convert each
+of these tokens to their lower case equivalent (using built-in
+functions) and trim off any white space. During this processing, the
+program may safely ignore new line characters and blank lines. That is,
+it shall not count a tab or carriage return as a word token. 
+
+Using the list of pre-processed tokens extracted from the text file, the
+program shall then build a frequency count object. This custom class
+shall perform the calculations and store the data associated with the
+input list used when constructing it. 
+
+The Driver program shall then display information about the input text
+by calling the FrequencyCount object's head and tail methods. These
+methods return a list of strings representing the most (head) and least
+(tail) frequent tokens in the object. The Driver program shall use these
+strings to display information about the most and least frequent tokens
+in the input file. Additionally, the driver program shall include
+information about the percentage for each of these most and least
+frequent tokens. 
+
+After demonstrating correct performance with single words, the program
+shall construct a frequency count object from the input file using a
+degree of 4. Thus, the map will contain tokens consisting of four
+consecutive words (ignore line breaks). Thus, given the following text:
+
+/All those moments will be lost in time, like tears in rain. Time to die./
+
+The program extracts the following 4-grams:
+
+"All those moments will" -> 1
+"those moments will be" -> 1
+"moments will be lost" -> 1
+"will be lost in" -> 1
+"be lost in time," -> 1
+...
+"rain. Time to die." -> 1
+
+Using this object, the driver program shall use the random token method
+on the FrequencyCount object to construct a random phrase/poem. To do
+so, it shall first print one 4-gram on a line, followed by a line with
+two 4-grams, and concluded with a single 4-gram.  
+
+
+      FrequencyCount Class
+
+The FrequencyCount class shall use a private Map (e.g., HashMap,
+TreeMap, etc . . .) containing the tokens as keys and the number of
+times that token appears in the text as its value. 
+
+When constructing a FrequencyCount object, the user may choose from one
+of two constructors:
+
+FrequencyCount(List<String> text): The single parameter constructor uses
+the list parameter as the source text and calculates the frequencies of
+words contained in it. The class does not preserve the input list, nor
+does it modify it. 
+
+FrequencyCount(List<String> text, int degree): Constructs a frequency
+count object from the input text, but rather than always counting words,
+this constructor builds its map using multiple words in the input list
+as the keys in its map. This constructor allows the caller to construct
+a frequency count of bigrams, 3-grams, and 4-grams in the text. Using
+this constructor with degree=1 behaves exactly as the single parameter
+constructor FrequencyCount(List). 
+
+List<String> head(): Returns an ordered list (e.g., std::vector,
+ArrayList, LinkedList, Array) of the top-20, most frequent tokens
+appearing in the input text file. The item at index 0 shall be the most
+frequent. In the case of ties with more than 20 items, the program shall
+simply stop including additional items with the identical count after it
+fills the return List with 20 items. 
+
+List<String> tail(): Returns an ordered list (e.g., std::vector,
+ArrayList, LinkedList, Array) of the top-20, least frequent tokens
+appearing in the input text file. The item at index 0 shall be the most
+frequent of the least frequent, and the item at index 19 shall be the
+absolute least frequent item in the original text. In the case of ties
+with more than 20 items, the program shall simply stop including
+additional items with the identical count after it fills the return List
+with 20 items. 
+
+String randomToken(): returns a random token from the keys inside. 
+
+int count(String token): returns the current frequency count for the
+input token string. Zero if not present. 
+
+int percent(String token): calculates and returns the percentage of the
+original input text of the token's appearance. A file filled entirely
+with the word 'the' shall return 1 when asked for the percent of file
+consists of "the." 
+
+int add(String token): inserts the token parameter into the frequency
+count map and updates the count for the indicated token by one. If the
+token does not appear in the map, it shall use a count of one, if it is
+already present, it shall increment the count for the specified token by
+1. This method allows callers to insert items into the FrequencyCount
+object after its construction. 
+
+
+    Other Notes
+
+This program only works with ASCII coded files. Frequently, these types
+of files automatically end in the .txt extension, but this is not a
+requirement to be an ASCII file. HTML files are also ASCII coded text
+files. Unfortunately, the colloquial use of "text file" erroneously
+includes .doc, .docx, .pages, and any other file type created by a word
+processor. These files are in no way ASCII coded text files. Just
+because the document contains text does not make it a text file. This
+program will not work with binary coded files created by word processing
+applications. It will, however, work with almost all source code files
+(i.e., .java, .c++, .py, etc . . .). 
+
+1605340799 11/13/2020 11:59pm
+Description
+Long Description
+Cancel Update Criterion
+
+Additional Comments:
+Cancel Update Comments
+Additional Comments:
+Rating Score
+Rating max score to > pts
+Rating Title
+Rating Description
+Cancel Update Rating
+
+
+    Rubric
+
+//
+<https://sdsu.instructure.com/courses/33181/rubrics/%7B%7B%20id%20%7D%7D> //
+<https://sdsu.instructure.com/search/rubrics?q=> //
+<https://sdsu.instructure.com/courses/33181/rubric_associations/%7B%7B%20rubric_association_id%20%7D%7D>
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+<https://sdsu.instructure.com/courses/33181/rubric_associations/%7B%7B%20rubric_association_id%20%7D%7D/assessments/%7B%7B%20assessment_id%20%7D%7D>
+ 
+<https://sdsu.instructure.com/courses/33181/rubrics/%7B%7B%20rubric_id%20%7D%7D>
+ 
+<https://sdsu.instructure.com/courses/33181/rubric_associations/%7B%7B%20association_id%20%7D%7D>
+
+Can't change a rubric once you've started using it.  
+<https://sdsu.instructure.com/courses/33181/rubric_associations/%7B%7B%20association_id%20%7D%7D>
+
+Find a Rubric <https://sdsu.instructure.com/search/rubrics?q=>
+Title: Find Rubric <https://sdsu.instructure.com/search/rubrics?q=>
+Title
+You've already rated students with this rubric. Any major changes could
+affect their assessment results.
+Title
+Criteria 	Ratings 	Pts
+//Edit criterion description <#> //Delete criterion row <#>
+// This criterion is linked to a Learning Outcome Description of criterion
+Range
+threshold: 5 pts
+	
+//Edit rating <#> //Delete rating <#>
+5 to >0 pts
+Full Marks
+blank
+// <#>
+	
+//Edit rating <#> //Delete rating <#>
+0 to >0 pts
+No Marks
+blank_2
+
+This area will be used by the assessor to leave comments related to this
+criterion.
+	pts
+  / 5 pts
+-- 
+Additional Comments <#>
+//Edit criterion description <#> //Delete criterion row <#>
+// This criterion is linked to a Learning Outcome Description of criterion
+Range
+threshold: 5 pts
+	
+//Edit rating <#> //Delete rating <#>
+5 to >0 pts
+Full Marks
+blank
+// <#>
+	
+//Edit rating <#> //Delete rating <#>
+0 to >0 pts
+No Marks
+blank_2
+
+This area will be used by the assessor to leave comments related to this
+criterion.
+	pts
+  / 5 pts
+-- 
+Additional Comments <#>
+Total Points: 5 out of 5
+
+I'll write free-form comments when assessing students
+Remove points from rubric
+Don't post Outcomes results to Learning Mastery Gradebook
+Use this rubric for assignment grading
+Hide score total for assessment results
+Cancel Create Rubric
+
+//Previous Previous: Quiz 10: Hash Tables
+<https://sdsu.instructure.com/courses/33181/modules/items/152904> Next//
+Next Module: Unit 4: Advanced Topics
+<https://sdsu.instructure.com/courses/33181/modules/items/152905>
+
+
+    Submission
+
+// Submitted!
+Nov 16, 2020 at 1:41pm (late)
+Submission Details
+<https://sdsu.instructure.com/courses/33181/assignments/44407/submissions/33445>
+
+Download Steven_Kha_Program_3.zip
+<https://sdsu.instructure.com/courses/33181/assignments/44407/submissions/33445?download=1187225>
+
+success
+Grade: 30 (30 pts possible)
+Graded Anonymously: no
+
+
+      Comments:
+
+-Reads filename from command line -Finds file path correctly -Parses
+file correctly -Prints head and tail -Prints poem -All required
+functions implemented correctly
+Zachary Selchau, Dec 14, 2020 at 1:45pm
+
+34c2ed8f-45e5-4b6b-993b-ce85ffa4cd7d

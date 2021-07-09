@@ -1,0 +1,4 @@
+San Fran, 0, 10, 7, 1,
+San Diego, 22, 0, 31, 2,
+Los Angeles, 4, 12, 0, 20
+Seattle, 6, 18, 40, 0

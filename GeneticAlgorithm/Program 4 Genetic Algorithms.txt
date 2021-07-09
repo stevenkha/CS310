@@ -1,0 +1,444 @@
+// Dashboard
+CS310-01-Fall2020
+Program 4: Genetic Algorithms
+<https://sdsu.instructure.com/courses/33181>
+//
+Skip To Content <#content>
+Dashboard <https://sdsu.instructure.com/>
+
+  *
+    Steven Kha
+    Account
+
+  *
+    Dashboard
+    <https://sdsu.instructure.com/>
+  *
+    Courses
+
+  *
+    Calendar
+    <https://sdsu.instructure.com/calendar>
+  *
+    Inbox
+    <https://sdsu.instructure.com/conversations>
+  *
+    History
+
+  *
+    Studio
+    <https://sdsu.instructure.com/accounts/1/external_tools/247?launch_type=global_navigation>
+
+  *
+    Help
+    <http://help.instructure.com/>
+
+  *
+
+      
+
+Close <#>
+//
+
+  * /My Dashboard / <https://sdsu.instructure.com/>
+  * CS310-01-Fall2020 <https://sdsu.instructure.com/courses/33181>
+  * Assignments <https://sdsu.instructure.com/courses/33181/assignments>
+  * Program 4: Genetic Algorithms
+    <https://sdsu.instructure.com/courses/33181/assignments/44392>
+
+Fall 2020
+
+  * Home <https://sdsu.instructure.com/courses/33181>
+  * Announcements <https://sdsu.instructure.com/courses/33181/announcements>
+  * Assignments <https://sdsu.instructure.com/courses/33181/assignments>
+  * Discussions
+    <https://sdsu.instructure.com/courses/33181/discussion_topics>
+  * Grades <https://sdsu.instructure.com/courses/33181/grades>
+  * Files <https://sdsu.instructure.com/courses/33181/files>
+  * Syllabus
+    <https://sdsu.instructure.com/courses/33181/assignments/syllabus>
+  * Quizzes <https://sdsu.instructure.com/courses/33181/quizzes>
+  * Modules <https://sdsu.instructure.com/courses/33181/modules>
+  * Collaborations
+    <https://sdsu.instructure.com/courses/33181/collaborations>
+  * Google Drive
+    <https://sdsu.instructure.com/courses/33181/external_tools/27>
+  * Library Resources
+    <https://sdsu.instructure.com/courses/33181/external_tools/469>
+
+
+  Program 4: Genetic Algorithms
+
+  * Due Dec 9, 2020 by 11:59pm
+  * Points 25
+  * Submitting a file upload
+  * Available Nov 6, 2020 at 12am - Dec 23, 2020 at 11:59pm about 2 months
+
+This assignment was locked Dec 23, 2020 at 11:59pm.
+
+
+    Overview
+
+The classic traveling salesperson problem serves as an example of
+something that seems easy to compute, but it is actually quite
+difficult. In the problem, a salesperson starts at one city and must
+visit every other city exactly once before returning home. Obviously,
+some cities are further apart than others, so the cost to move between
+them varies. How do you calculate the shortest possible route through
+these cities?
+
+Computers perform calculations much faster than humans, so it does not
+seem like asking a computer to calculate the length of every possible
+route would be much of a problem. If you were visiting three cities, for
+example, the computer would only need to calculate the length of the routes:
+
+a, b, c, (a)
+a, c, b, (a)
+b, a, c, (b)
+b, c, a, (b)
+c, a, b, (c)
+c, b, a, (c)
+
+From these six calculations, the machine will be able to select the
+shortest path by simply looking for the minimum cost/distance of each
+combination. This approach appears trivially easy. That said, what
+happens when the number of cities we visit grows to four? Instead of six
+routes, we have twenty-four. Still manageable, for you computer does
+more every second sitting idle than evaluating a handful of routes. At
+five cities, there are 120 possible routes, and at six it grows to 720.
+
+This problem produces factorial growth. At only ten cities, there are
+3,628,800 possible combinations. A computer can *absolutely* calculate a
+problem of this size, but the user will likely notice a delay while the
+computer "thinks."
+
+At fifteen cities, we cross into the trillions. Consequently, you cannot
+calculate problems of this nature by exhausting every possible sequence
+in a brute force tactic. That said, because this problem appears again
+and again in places you wouldn't expect (e.g., reverse kinematics -- how
+the Madden animated models manage to move their joints to dynamically
+catch a football). One approach to these problems involves using a
+Genetic Algorithm.
+
+Genetic Algorithms do not seek to provide the absolute, guaranteed
+shortest path, but they promise they should figure out something
+near-optimal. It is possible for a genetic algorithm to fail and produce
+a terrible route, but it probably will produce something close to an
+optimal route. This is the trade-off the genetic algorithm offers over a
+brute-force technique. You trade accuracy for computability.
+
+In this assignment, students will create an application that reads in an
+adjacency matrix from a file and computes a near-optimal path through
+each vertex.
+
+  * Understand how an adjacency matrix may represent a Graph and the
+    connections between nodes.
+  * Gain additional experience manipulating and creating arrays and
+    Lists as well as using Sets or Maps.
+  * Explore a basic Artificial Intelligence algorithm: fitness
+    functions, genetic algorithms, mutations.
+  * Make extensive use of randomization.
+
+
+    Adjacency Matrix
+
+The input file will consist of comma-separated integer values. Each line
+represents a row in a matrix, and each value on the row signifies a
+column. The input file takes the following general format:
+
+node name1, cost1, cost2, . . . , costN,
+....
+node nameN, cost1, cost2, . . . , costN
+
+The first column on the row indicates the ASCII name to use when
+referencing this node (or city). Valid node names may not include
+commas. After the node name, the cost associated with moving from that
+node to each of the other nodes in the graph appears. For example, a
+graph with just one city would have something like:
+Sea Land, 0
+
+Here, the graph consists of one city named "Sea Land." The cost of
+moving from Sea Land to Sea Land is zero. A graph with two cities might
+look like:
+
+San Francisco, 0, 10,
+San Diego, 12, 0
+
+The cost of moving from San Francisco to San Francisco is zero (avoiding
+jokes about SF cost of living), and the cost for moving from San
+Francisco to San Diego is ten. Going from San Diego to San Francisco
+costs slightly more with a price of twelve. Note that each line is
+terminated by a comma EXCEPT the last entry in the file. Students may
+choose to also accept files that include a trailing comma, but it is
+safe to assume that the input files will not.
+For extreme clarity, a graph with three nodes might look like:
+
+a, 0, 10, 7,
+b, 22, 0, 31,
+c, 4, 12, 0
+
+The "cost" of the route {b, a, c} is the sum of b to a (22), a to c (7),
+and c to b (12). This route costs 41 points to traverse. Alternatively,
+route {c, a, b} is c to a (4), a to b (10), and b to c (31). This route
+costs 45 points. Given these two calculations, the first route appears
+like a better fit toward an optimal path.
+
+For this assignment, we will evaluate the graphs using an input
+adjacency matrix with twenty-five entries. This problem is intractable
+on your computer using brute force techniques (i.e. 25! is massive).
+
+
+    Genetic Algorithm
+
+Students shall solve this problem using a genetic algorithm as discussed
+in class. The general strategy is:
+
+ 1. Generate an Initial Population: Randomly generate several complete
+    sequences of nodes to visit. If there are twenty-five nodes, the
+    sequence shall include each one exactly once. Keeping with the
+    'genetic' analogy, these sequences are the chromosomes for the
+    algorithm.
+ 2. Fitness Function: Survival of the fittest requires us to identify a
+    metric with which we can rank each chromosome. For this problem, the
+    fitness of a solution should reflect the length of the chromosome's
+    path. For us, smaller numbers are more fit.
+ 3. Crossover: Based on their fitness, partner chromosomes up for
+    breeding. The strategy for partnering up chromosomes varies with
+    each solution, but generally the more fit chromosomes have a greater
+    chance of breeding than the less fit ones, but research suggests
+    including a few of the less-fit chromosomes in the breeding cycle
+    can lead to a better solution.
+ 4. Mutation: Each resultant chromosome (the output of the crossover
+    process) has a chance to randomly mutate. For a mutation, simply
+    flip the positions of two nodes in the sequence.
+ 5. Repeat: Continue this process using the fitness function to select a
+    new population of breeding pairs which will then crossover and
+    possibly mutate.
+
+
+    Operation
+
+Upon execution, the program shall read in the command-line argument
+which specifies the location of the input file (adjacency matrix) to
+use. It should exit if it cannot open the file. After opening the
+adjacency matrix, it shall display information about the file to
+indicate a successful graph construction. This should include the number
+of input nodes and, perhaps, and example of a few connections between
+them. Next, the application shall prompt the user to enter the number of
+initial chromosomes to generate. You may wish to offer a recommendation
+in parentheses, and if the user presses enter with no input it uses that
+number, but this behavior is optional.
+
+After establishing the initial number of chromosomes, the program shall
+request the number of epochs (or generations) it should test. This
+number reflects the number of breeding cycles (crossover) operations the
+algorithm will loop through before terminating. You may also include a
+recommended default here.
+
+As the program progresses, it shall write all output to the terminal
+window (System.out or std::cout <<). At the start of each epoch, the
+program shall display information about the current chromosome
+population. These data shall include the epoch number, the length of the
+'most fit' path, and the average fitness of all the chromosomes in the
+epoch. The program may provide a prompt informing the user of the
+crossover step, but this behavior is optional and may not add any value.
+The program should report when it performs a mutation, or the number of
+mutations performed, on each epoch. This will let you know the operation
+triggered and verify its frequency.
+
+The program shall terminate after it completes the number of steps
+established by the user when the program launched. Upon exit, it shall
+display information about the winning chromosome (path). It shall
+include the sequence of nodes to visit as well as the path's length.
+
+
+    Delivery
+
+Students shall submit the source code and an example of the output on
+Canvas. You may copy the output into a text file for submission, but
+students should avoid screen shots. The image format requires larger
+files than the text one, and you should be comfortable creating text
+files by the time this class concludes.
+
+Do not forge your example output file or we shall consider it cheating.
+It must reflect an actual execution of the code you submit. Furthermore,
+it shall be against the instructor provided input adjacency matrix of
+twenty-five nodes. 
+
+
+    Grading:
+
+Adjacency Matrix: Correctly reads in from command line arguments (3
+points), displays information about graph (2 points)
+
+Genetic Algorithm: Random genome generation (3), Fitness function (2),
+Crossover (5), Mutation (2), Repeats correct number of epochs (3).
+
+Output: Text file submitted with correct output (3), Clean readable
+output (2)
+
+
+    Other Notes
+
+The use of small, helper functions in this assignment will substantially
+enhance code readability, flow, and reduce the chance of introducing
+errors. For example, the function responsible for generating an initial
+population can return an array of chromosomes, but it should use another
+small function that randomly generates each sequence.
+
+When selecting chromosomes for breeding, students will need to establish
+a selection heuristic. Selecting the best to automatically 'clone'
+itself into the output chromosomes is a valid strategy, but your
+solution may always require crossover for every node if you feel it
+performs better.
+
+In crossover, half the genes in the output chromosome will identically
+match one of its parents. Students may randomly select genes to match,
+or may simply use the first half or second half exactly as it appears.
+The crossover step requires a fixup step to make sure duplicates do not
+appear in the output chromosome.
+
+Mutation should occur rarely, but with a high enough percentage that one
+output chromosome from each epoch mutates. With a population of 100
+chromosomes, the mutation percentage could be 1%, but with only 10
+chromosomes, it could be 10%. We want to rarely mutate, but mutation
+should occur frequently enough that it reliably happens.
+
+Unix/Linux users (this includes iOS) should be able to redirect input
+from the keyboard and output to a file. That is:
+
+./a.out < inputText.txt > output.txt
+
+Check out: https://www.december.com/unix/tutor/redirect.html (Links to
+an external site.) <https://www.december.com/unix/tutor/redirect.html>
+for more information.
+
+ 
+
+1607587199 12/09/2020 11:59pm
+Description
+Long Description
+Cancel Update Criterion
+
+Additional Comments:
+Cancel Update Comments
+Additional Comments:
+Rating Score
+Rating max score to > pts
+Rating Title
+Rating Description
+Cancel Update Rating
+
+
+    Rubric
+
+//
+<https://sdsu.instructure.com/courses/33181/rubrics/%7B%7B%20id%20%7D%7D> //
+<https://sdsu.instructure.com/search/rubrics?q=> //
+<https://sdsu.instructure.com/courses/33181/rubric_associations/%7B%7B%20rubric_association_id%20%7D%7D>
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+<https://sdsu.instructure.com/courses/33181/rubric_associations/%7B%7B%20rubric_association_id%20%7D%7D/assessments/%7B%7B%20assessment_id%20%7D%7D>
+ 
+<https://sdsu.instructure.com/courses/33181/rubrics/%7B%7B%20rubric_id%20%7D%7D>
+ 
+<https://sdsu.instructure.com/courses/33181/rubric_associations/%7B%7B%20association_id%20%7D%7D>
+
+Can't change a rubric once you've started using it.  
+<https://sdsu.instructure.com/courses/33181/rubric_associations/%7B%7B%20association_id%20%7D%7D>
+
+Find a Rubric <https://sdsu.instructure.com/search/rubrics?q=>
+Title: Find Rubric <https://sdsu.instructure.com/search/rubrics?q=>
+Title
+You've already rated students with this rubric. Any major changes could
+affect their assessment results.
+Title
+Criteria 	Ratings 	Pts
+//Edit criterion description <#> //Delete criterion row <#>
+// This criterion is linked to a Learning Outcome Description of criterion
+Range
+threshold: 5 pts
+	
+//Edit rating <#> //Delete rating <#>
+5 to >0 pts
+Full Marks
+blank
+// <#>
+	
+//Edit rating <#> //Delete rating <#>
+0 to >0 pts
+No Marks
+blank_2
+
+This area will be used by the assessor to leave comments related to this
+criterion.
+	pts
+  / 5 pts
+-- 
+Additional Comments <#>
+//Edit criterion description <#> //Delete criterion row <#>
+// This criterion is linked to a Learning Outcome Description of criterion
+Range
+threshold: 5 pts
+	
+//Edit rating <#> //Delete rating <#>
+5 to >0 pts
+Full Marks
+blank
+// <#>
+	
+//Edit rating <#> //Delete rating <#>
+0 to >0 pts
+No Marks
+blank_2
+
+This area will be used by the assessor to leave comments related to this
+criterion.
+	pts
+  / 5 pts
+-- 
+Additional Comments <#>
+Total Points: 5 out of 5
+
+I'll write free-form comments when assessing students
+Remove points from rubric
+Don't post Outcomes results to Learning Mastery Gradebook
+Use this rubric for assignment grading
+Hide score total for assessment results
+Cancel Create Rubric
+
+//Previous Previous: Quiz 11: Graphs and Shortest Path
+<https://sdsu.instructure.com/courses/33181/modules/items/152905>
+
+
+    Submission
+
+// Submitted!
+Dec 8, 2020 at 8:53pm
+Submission Details
+<https://sdsu.instructure.com/courses/33181/assignments/44392/submissions/33445>
+
+Download Steven_Kha_Program4.zip
+<https://sdsu.instructure.com/courses/33181/assignments/44392/submissions/33445?download=1372720>
+
+success
+Grade: 24 (25 pts possible)
+Graded Anonymously: no
+
+
+      Comments:
+
+Your solution seemed to find the shortest path right out of the gate,
+and I suspect that is the nature of this specific matrix. That said, the
+average fitness did decrease each epoch, and that seems to indicate that
+it was performing. It was a difficult assignment, and you did good.
+Shawn Healey, Dec 17, 2020 at 4:55pm
+
+b09a4f12-8295-4f5c-acd6-90d1e3645d62
